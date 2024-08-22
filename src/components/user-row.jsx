@@ -1,13 +1,13 @@
 import React from "react";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, deleteEmployee }) => {
   return (
     <tr>
       <td>
         <div className="flex items-center gap-3">
           <div className="avatar">
             <div className="mask mask-squircle h-12 w-12">
-              {user.profileImg}
+              <img src={user.profileImg} alt="" />
             </div>
           </div>
         </div>
@@ -18,12 +18,17 @@ const UserCard = ({ user }) => {
         </div>
       </td>
       <td>
-        <span className="badge badge-ghost badge-x">{user.postition}</span>
+        <span className="badge badge-ghost badge-x">{user.position}</span>
       </td>
       <td>{user.email}</td>
       <th className="flex gap-3">
         <button className="btn btn-info btn-xs">Info</button>
-        <button className="btn btn-error btn-xs">Error</button>
+        <button
+          className="btn btn-error btn-xs"
+          onClick={() => deleteEmployee(user.eid)}
+        >
+          Delete
+        </button>
       </th>
     </tr>
   );
