@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserCard = ({ user, deleteEmployee }) => {
+const UserCard = ({ user, deleteEmployee, editEmployee }) => {
   return (
     <tr>
       <td>
@@ -22,7 +22,12 @@ const UserCard = ({ user, deleteEmployee }) => {
       </td>
       <td>{user.email}</td>
       <th className="flex gap-3">
-        <button className="btn btn-info btn-xs">Info</button>
+        <button
+          className="btn btn-info btn-xs"
+          onClick={() => editEmployee(user.eid)}
+        >
+          Edit
+        </button>
         <button
           className="btn btn-error btn-xs"
           onClick={() => deleteEmployee(user.eid)}

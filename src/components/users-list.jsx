@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserHead from "./user-head";
 import UserCard from "./user-row";
+import Modal from "./modal";
 
 const UsersList = () => {
   const [users, setUsers] = useState();
@@ -30,6 +31,17 @@ const UsersList = () => {
     setUsers([...users, name]);
   };
 
+  const editEmployee = async (userId) => {
+    console.log("userId", userId);
+    const res = await fetch(`http://localhost:8000/users/${userId}`, {
+      method: "EDIT",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const { users } = await res.json();
+  };
+
   const deleteEmployee = async (userId) => {
     console.log("userId", userId);
     const res = await fetch(`http://localhost:8000/users/${userId}`, {
@@ -38,31 +50,37 @@ const UsersList = () => {
         "Content-type": "application/json",
       },
     });
-    const { deleteEmployee } = await res.json();
-    setUsers([...users, deleteEmployee]);
+    const { employees } = await res.json();
+    console.log("employees", employees);
+    setUsers(users.filter((employee) => employee.eid !== userId));
   };
 
   useEffect(() => {
     getEmployeesData();
   }, []);
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto container m-auto">
       <h1 className="flex justify-center font-medium text-7xl mb-28">
         User List
       </h1>
-      <table className="table">
-        <UserHead />
-        <tbody>
-          {users?.map((user) => (
-            <UserCard user={user} deleteEmployee={deleteEmployee} />
-          ))}
-        </tbody>
-      </table>
       <div>
         <button className="btn btn-info btn-outline" onClick={createEmployee}>
           Ажилтан нэмэх
         </button>
       </div>
+      <table className="table">
+        <UserHead />
+        <tbody>
+          {users?.map((user) => (
+            <UserCard
+              user={user}
+              deleteEmployee={deleteEmployee}
+              editEmployee={editEmployee}
+            />
+          ))}
+        </tbody>
+      </table>
+      <Modal />
     </div>
   );
 };
